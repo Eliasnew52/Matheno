@@ -1,0 +1,12 @@
+Comandos Para Subir Cambios al Repo
+
+git status = Para verificar que archivos se crearon o modificaron
+
+git add . = Para Agregar todos los Cambios al Repositorio Local
+
+git commit -m "MENSAJE" = Para Crear la Version Nueva de Manera Local
+
+git push = Para Subir la Version a Github
+
+git status = Para Verificar que todo se subio
+
