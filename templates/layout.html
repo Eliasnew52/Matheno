@@ -13,14 +13,22 @@
                 <ul class="menu">
                     <li class="menu__opc"><a href="#"> Perfil</a></li>
                     <li class="menu__opc"><a href="#"> + </a></li>
+                    <li class="menu__opc"><a href="/logout"> log out </a></li>                    
                 </ul>
                 {% else %}
                 <ul class="menu">
-                    <li class="menu__opc"><a href="#">Login</a></li>
-                    <li class="menu__opc"><a href="#">Registarse</a></li>
+                    <li class="menu__opc"><a href="/login">Login</a></li>
+                    <li class="menu__opc"><a href="/register">Registarse</a></li>
                 </ul>
+                {% endif %}
             </nav>
         </header>
+                {% if get_flashed_messages() %}
+        <div>
+            <div class="alert alert-primary mb-0 text-center" role="alert">
+                {{ get_flashed_messages() | join(" ") }}
+            </div>
+        </div>
                 {% endif %}
         <main class="container-fluid py-5 text-center">
             {% block main %}{% endblock %}

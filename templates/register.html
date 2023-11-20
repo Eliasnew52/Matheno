@@ -1,9 +1,22 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    Index
+    Register
 {% endblock %}
     
 {% block main %}
-
+    <div class="form-r">
+        <input autocomplete="off" autofocus class="form-control" name="Usuario" placeholder="Usuario" type="text">
+    </div>
+    <div class="form-r">
+        <input autocomplete="off" autofocus class="form-control" name="Email" placeholder="Email" type="text">
+    </div>
+    <div class="form-r">
+        <input class="form-control" name="Password" placeholder="Contraseña" type="password">
+    </div>
+    <div class="form-r">
+        <input class="form-control" name="confirmation" placeholder="Verificar Contraseña" type="password">
+    </div>
+    <button class="btn btn-primary" type="submit">Registrarse</button>
+</form>
 {% endblock %}
