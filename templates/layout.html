@@ -11,8 +11,8 @@
             <nav class="navbar">
                 {% if session["user_id"] %}
                 <ul class="menu">
-                    <li class="menu__opc"><a href="#"> Perfil</a></li>
-                    <li class="menu__opc"><a href="#"> + </a></li>
+                    <li class="menu__opc"><a href="/perfil"> Perfil</a></li>
+                    <li class="menu__opc"><a href="/create_quizz"> + </a></li>
                     <li class="menu__opc"><a href="/logout"> log out </a></li>                    
                 </ul>
                 {% else %}

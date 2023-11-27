@@ -104,3 +104,17 @@ def login():
 def logout():
     session.clear()
     return redirect("/")
+
+@app.route("/create_quizz", methods=[ "GET", "POST"])
+@login_required
+def create_quizz():
+    db = sqlite3.connect("matheno.db", check_same_thread=False)
+    c = db.cursor()
+    if request.method == "POST":
+        if not request.form.get("Nombre"):
+            flash("Se tiene que ingresar un nombre para el nuevo quizz.")
+            return redirect("/create_quizz")
+        Nombre = request.form.get("Nombre")
+        return render_template("create_quizz.html", Nombre = Nombre)
+    else:
+        return render_template("create_quizz.html")

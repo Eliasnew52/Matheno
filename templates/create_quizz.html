@@ -6,4 +6,23 @@
     
 {% block main %}
 
+
+    {% if Nombre %}
+    <form action="{{ url_for('create_quizz')}}" method="post">
+        
+    </form>
+    {% else %}
+
+    <form action="{{ url_for('create_quizz')}}" method="post">
+        <div class="form-r">
+            <h3>Ingresa el nombre del Quizz</h3>
+            <input autocomplete="off" autofocus class="form-control" name="Nombre" placeholder="Nombre" type="text">
+            <button class="btn btn-primary" type="submit">Confirmar</button>
+        </div>
+    </form>
+
+    {% endif %}
+
+
+
 {% endblock %}
