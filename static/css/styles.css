@@ -5,7 +5,7 @@
   margin: 0;
   padding: 0;
 }
-a {
+.avemaria {
   font-size: 20px;
   outline: none;
   text-decoration: none; 
@@ -40,13 +40,14 @@ body {
   padding: 0;
 }
 
-header {
+nav {
   background-color: #333;
   padding: 10px;
   text-align: center;
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: flex;
 }
 
 div {
@@ -54,13 +55,6 @@ div {
   margin-right: auto;
   padding-left: 15px;
   padding-right: 15px;
-}
-
-nav {
-  padding: 10px;
-  flex-direction: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 section {

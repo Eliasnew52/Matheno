@@ -32,31 +32,31 @@ def register():
     c = db.cursor()
     if request.method == "POST":
         if not request.form.get("Usuario"):
-             flash("must provide username")
-             return redirect("/register")
+            flash("must provide username")
+            return render_template("register.html")
         elif not request.form.get("Password"):
             flash("must provide password")
-            return redirect("/register")
+            return render_template("register.html")
         elif not request.form.get("confirmation"):
             flash("must confirm password")
-            return redirect("/register")
+            return render_template("register.html")
         elif request.form.get("Password") != request.form.get("confirmation"):
             flash("passwords must match")
-            return redirect("/register")
+            return render_template("register.html")
         elif len(request.form.get("Password")) < 8:
             flash("password must be at least 8 characters")
-            return redirect("/register")
+            return render_template("register.html")
         elif request.form.get("Password").isalpha():
             flash("password must contain at least one number or symbol")
-            return redirect("/register")
+            return render_template("register.html")
         elif request.form.get("Password").isdigit():
             flash("password must contain at least one letter or symbol")
-            return redirect("/register")
+            return render_template("register.html")
 
         search = c.execute("SELECT * FROM Usuarios WHERE Usuario = ?", [request.form.get("Usuario")]).fetchall()
         if len(search) != 0:
             flash("username already taken")
-            return redirect("/register")
+            return render_template("register.html")
         c.execute("INSERT INTO Usuarios (Usuario, Email, Password) VALUES (?, ?, ?)", [request.form.get("Usuario"), request.form.get("Email"), generate_password_hash(request.form.get("Password"))])
 
         remember = db.execute("SELECT IdUsuarios FROM Usuarios WHERE Usuario = ?", [request.form.get("Usuario")]).fetchall()
@@ -76,20 +76,20 @@ def login():
     c = db.cursor()
     if request.method == "POST":
         if not request.form.get("Usuario"):
-            flash("must provide username")
-            return redirect("/login")
+            flash('must provide username')
+            return render_template("login.html")
         elif not request.form.get("password"):
             flash("must provide password")
-            return redirect("/login")
+            return render_template("login.html")
         
         search = db.execute("SELECT * FROM Usuarios WHERE Usuario = ?", [request.form.get("Usuario")]).fetchall()
 
         if len(search) == 0:
             flash("invalid username")
-            return redirect("/login")
+            return render_template("login.html")
         elif not check_password_hash(search[0][3], request.form.get("password")):
             flash("invalid password")
-            return redirect("/login")
+            return render_template("login.html")
         
         remember = db.execute("SELECT IdUsuarios FROM Usuarios WHERE Usuario = ?", [request.form.get("Usuario")]).fetchall()
         session["user_id"] = [remember[0], ["IdUsuarios"]]
@@ -111,10 +111,11 @@ def create_quizz():
     db = sqlite3.connect("matheno.db", check_same_thread=False)
     c = db.cursor()
     if request.method == "POST":
-        if not request.form.get("Nombre"):
-            flash("Se tiene que ingresar un nombre para el nuevo quizz.")
-            return redirect("/create_quizz")
         Nombre = request.form.get("Nombre")
+        if not Nombre:
+            flash("Se tiene que ingresar un nombre para el nuevo quizz.")
+            return render_template(create_quizz.html)
+        
         return render_template("create_quizz.html", Nombre = Nombre)
     else:
         return render_template("create_quizz.html")
