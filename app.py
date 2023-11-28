@@ -23,6 +23,8 @@ def after_request(response):
 
 @app.route("/")
 def index():
+    db = sqlite3.connect("matheno.db", check_same_thread=False)
+    c = db.cursor()
     return render_template("index.html")
 
 @app.route("/register", methods=[ "GET", "POST"])
