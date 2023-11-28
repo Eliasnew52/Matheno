@@ -112,9 +112,11 @@ def create_quizz():
     c = db.cursor()
     if request.method == "POST":
         Nombre = request.form.get("Nombre")
+        Descripcion = request.form.get("Descripcion")
+        Categoria  = request.form.get("Categoria")
         if not Nombre:
             flash("Se tiene que ingresar un nombre para el nuevo quizz.")
-            return render_template(create_quizz.html)
+            return render_template("create_quizz.html")
         
         return render_template("create_quizz.html", Nombre = Nombre)
     else:
