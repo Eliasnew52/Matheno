@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Buscar
+{% endblock %}
+    
+{% block main %}
+<div class="start-screen">
+    <h1>Welcome to Matheno</h1>
+    <p>Learn Psychometrics with our quizzes</p>
+
+    <label for="category">Category:</label>
+    <input type="text" id="category" placeholder="Enter category">
+    <label for="difficulty">Dificultad:</label>
+    <select id="difficulty">
+        <option value="Principiante">Principiante</option>
+        <option value="Amateur">Amateur</option>
+        <option value="Intermedio">Intermedio</option>
+        <option value="Avanzado">Avanzado</option>
+        <option value="Experto">Experto</option>
+    </select>
+    <button id="start">Search a quizz</button>
+</div>
+
+
+<script src="/static/js/scripts.js"></script>
+{% endblock %}

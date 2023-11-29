@@ -1,6 +1,7 @@
 import os
 import sqlite3
-
+import cloudinary
+          
 from flask import Flask, redirect, render_template,request, session, flash, url_for
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
@@ -21,11 +22,17 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def index():
     db = sqlite3.connect("matheno.db", check_same_thread=False)
     c = db.cursor()
-    return render_template("index.html")
+    if request.method == "POST":
+        if request.form.get("opc1") == "Buscar":
+            Buscar = request.form.get("Buscar")
+            return render_template("index.html", Buscar="Buscar")
+    else:
+        return render_template("index.html")
+
 
 @app.route("/register", methods=[ "GET", "POST"])
 def register():
@@ -123,3 +130,7 @@ def create_quizz():
         return render_template("create_quizz.html", Nombre = Nombre)
     else:
         return render_template("create_quizz.html")
+    
+@app.route("/Buscar")
+def Buscar():
+    return render_template("buscar.html")
