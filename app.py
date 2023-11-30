@@ -119,6 +119,8 @@ def logout():
 def create_quizz():
     db = sqlite3.connect("matheno.db", check_same_thread=False)
     c = db.cursor()
+    
+    Dificultad = c.execute("SELECT Dificultad FROM Dificultad").fetchall()
     if request.method == "POST":
         Nombre = request.form.get("Nombre")
         Descripcion = request.form.get("Descripcion")
@@ -127,10 +129,37 @@ def create_quizz():
             flash("Se tiene que ingresar un nombre para el nuevo quizz.")
             return render_template("create_quizz.html")
         
-        return render_template("create_quizz.html", Nombre = Nombre)
+        return render_template("create_quizz.html", Nombre = Nombre, Dificultad=Dificultad)
     else:
         return render_template("create_quizz.html")
     
 @app.route("/Buscar")
 def Buscar():
     return render_template("buscar.html")
+
+@app.route("/quizz")
+def quizz():
+    db = sqlite3.connect("matheno.db", check_same_thread=False)
+    c = db.cursor()
+    
+    view = c.execute("SELECT QuizzCreado.Quizz, QuizzCreado.Descripcion, QuizzCreado.PortadaLink, QuizzCreado.Verificado, Categoria.Categoria, Dificultad.Dificultad FROM QuizzCreado JOIN Categoria ON Categoria.IdCategoria = QuizzCreado.IdCategoria JOIN Dificultad ON Dificultad.IdDificultad = QuizzCreado.IdDificultad WHERE QuizzCreado.IdQuizzCreado = 2").fetchall()
+    v = ["Quizz","Descripcion","Portada","Verificado","Categoria","Dificultad"]
+    
+    r = []
+    for i in view:
+        for j in v:
+            a = dict(zip(v,i))
+        r.append(a)
+        
+    respuestas = c.execute("Select inciso.Subsection, Correctas.Respuesta, Incorrectas.Respuesta FROM QuizzCreado JOIN inciso ON QuizzCreado.IdQuizzCreado = inciso.IdQuizz JOIN Correctas ON Correctas.IdInciso = inciso.IdInciso JOIN Incorrectas ON inciso.IdInciso = Incorrectas.IdInciso WHERE QuizzCreado.IdQuizzCreado = 2 ORDER BY Incorrectas.Respuesta desc, Correctas.Respuesta asc").fetchall()
+    v2 = ['Pregunta','Respuesta Correcta', 'Respuesta Incorrecta']
+    answer = []
+    
+    for i in respuestas:
+        for j in v2:
+            a = dict(zip(v2,i))
+        answer.append(a)
+    print(answer)
+    
+    
+    return render_template("quizz.html" , r = r, answer=answer)

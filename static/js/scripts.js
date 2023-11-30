@@ -114,7 +114,4 @@ answersDiv.forEach((answer) => {
     });
 });
 
-var Buscar = document.getElementById("Buscar");
-Buscar.addEventListener("click", () => {
 
-}

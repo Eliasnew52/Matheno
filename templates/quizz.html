@@ -6,4 +6,32 @@
     
 {% block main %}
 
+  <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Quizz</th>
+                    <th>Descripcion </th>
+                    <th>Link de portada </th>
+                    <th> Verificacion </th>
+                    <th> Categoria </th>
+                    <th> Dificultad </th>
+                </tr>
+            </thead>
+            <tbody>
+                {%for i in r %}
+                    <tr>
+                        <td> {{i.Quizz}} </td>
+                        <td> {{i.Descripcion}} </td>
+                        <td> {{i.Portada}} </td>
+                        <td>{{i.Verificacion}}</td>
+                        <td> {{i.Categoria}} </td>
+                        <td> {{i.Dificultad}} </td>
+                    </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
 {% endblock %}
