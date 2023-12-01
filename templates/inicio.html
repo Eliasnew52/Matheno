@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--CSS-->
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/stylesinicio.css') }}"
+    />
+
+    <!--Boxicons CSS-->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <title>Inicio</title>
+  </head>
+
+  <body>
+
+
+    <nav class="sidebar close">
+      <header>
+        <div class="image-text">
+          <span class="image">
+            <img
+              src="{{ url_for('static', filename='matheno-logo-removebg-removebg-preview.png') }}"
+              alt="logo"
+            />
+          </span>
+
+          <div class="text header-text">
+            <span class="name">Matheno</span>
+            <span class="proyecto">Proyecto Final</span>
+          </div>
+        </div>
+        <i class="bx bx-chevron-right toggle"></i>
+      </header>
+
+      {% if session["user_id"] %}
+
+      <div class="menu-bar">
+        <div class="menu">
+          <li class="nav-link">
+              <a href="/">
+                <i class="bx bx-home icon"></i>
+                <span class="text nav-text">Presentación</span>
+              </a>
+            </li>
+
+            <!--2:-->
+            <li class="nav-link">
+              <a href="/perfil">
+                <i class="bx bx-user icon"></i>
+                <span class="text nav-text">Perfil</span>
+              </a>
+            </li>
+
+            <!--3:-->
+            <li class="nav-link">
+              <a href="#">
+                <i class="bx bx-game icon"></i>
+                <span class="text nav-text">Quiz psicométrico</span>
+              </a>
+            </li>
+
+            <!--4:-->
+            <li class="nav-link">
+              <a href="#">
+                <i class="bx bx-book-content icon"></i>
+                <span class="text nav-text">Quizzez creados</span>
+              </a>
+            </li>
+
+            <!--5:-->
+            <li class="nav-link">
+              <a href="#">
+                <i class="bx bx-edit-alt icon"></i>
+                <span class="text nav-text">Crear quiz</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="botton-content">
+          <!--6:-->
+          <li class="">
+            <a href="/logout">
+              <i class="bx bx-log-out icon"></i>
+              <span class="text nav-text">Cerrar sesión</span>
+            </a>
+          </li>
+          <!--7:-->
+
+          <li class="mode">
+            <div class="moon-sun">
+              <i class="bx bx-moon icon moon"></i>
+              <i class="bx bx-sun icon sun"></i>
+            </div>
+            <span class="mode-text text">Modo</span>
+
+            <div class="toggle-switch">
+              <span class="switch"></span>
+            </div>
+          </li>
+        </div>
+          {% else %}
+        <div class="menu">
+          <li class="nav-link">
+              <a href="/">
+                <i class="bx bx-home icon"></i>
+                <span class="text nav-text">Presentación</span>
+              </a>
+            </li>
+          <!--1:-->
+            <li class="nav-link">
+              <a href="/register">
+                <i class="bx bx-id-card icon"></i>
+                <span class="text nav-text">Registrarse</span>
+              </a>
+            </li>
+          <!--1:-->
+          <li class="nav-link">
+              <a href="/login">
+                <i class="bx bx-log-in icon"></i>
+                <span class="text nav-text">Acceso</span>
+              </a>
+            </li>
+        </div>
+          
+          {% endif %}
+  
+        
+      </div>
+    </nav>
+
+    <section class="home">
+      <div class="text">{% block home %} {% endblock %}</div>
+    </section>
+
+    {% if get_flashed_messages() %}
+    <div>
+      <div class="alert alert-primary mb-0 text-center" role="alert">
+        {{ get_flashed_messages() | join(" ") }}
+      </div>
+    </div>
+    {% endif %}
+    <!--{% block main %} {% endblock %}-->
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+  </body>
+</html>
