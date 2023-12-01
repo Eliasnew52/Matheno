@@ -1,7 +1,7 @@
 const progressBar = document.querySelector(".progress-bar"),
     progressText = document.querySelector(".progress-text");
 
-const progress = (value, time) => {
+const progress = (value) => {
     const percentage = (value / time) * 100;
     progressBar.style.width = `${percentage}%`;
     progressText.innerHTML = value;
@@ -13,21 +13,20 @@ let questions = [],
     currentQuestion,
     timer;
 
-const startBtn = document.querySelector("#start"),
+const startBtn = document.querySelector(".start"),
     numQuestions = document.querySelector("#num-questions"),
     Category = document.querySelector("#category"),
     difficulty = document.querySelector("#difficulty"),
     timePerQuestion = document.querySelector("#time"),
-    quiz = document.querySelector("#quiz"),
+    quiz = document.querySelector(".quiz"),
     startScreen = document.querySelector(".start-screen");
 
 const startQuiz = () => {
     const num = numQuestions.value;
     const cat = Category.value;
     const diff = difficulty.value;
-    time = parseInt(timePerQuestion.value);
     // Reemplaza la URL de la API con la correcta
-    const url = `https://api.example.com/questions?category=${cat}&difficulty=${diff}&amount=${num}`;
+    const url = `https://opentdb.com/api.php?amount=${num}&category=${cat}&difficulty=${diff}&type=multiple`;
 
     fetch(url)
         .then((res) => res.json())

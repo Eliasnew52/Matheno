@@ -139,6 +139,7 @@ def Buscar():
 
 @app.route("/quizz")
 def quizz():
+    
     db = sqlite3.connect("matheno.db", check_same_thread=False)
     c = db.cursor()
     
@@ -151,6 +152,16 @@ def quizz():
             a = dict(zip(v,i))
         r.append(a)
         
+    play = c.execute("select IdQuizzCreado from QuizzCreado Where IdQuizzCreado = 1")
+    
+    return render_template("quizz.html" , r = r)
+
+
+@app.route("/repro")
+def repro():
+    db = sqlite3.connect("matheno.db", check_same_thread=False)
+    c = db.cursor()
+    
     respuestas = c.execute("Select inciso.Subsection, Correctas.Respuesta, Incorrectas.Respuesta FROM QuizzCreado JOIN inciso ON QuizzCreado.IdQuizzCreado = inciso.IdQuizz JOIN Correctas ON Correctas.IdInciso = inciso.IdInciso JOIN Incorrectas ON inciso.IdInciso = Incorrectas.IdInciso WHERE QuizzCreado.IdQuizzCreado = 2 ORDER BY Incorrectas.Respuesta desc, Correctas.Respuesta asc").fetchall()
     v2 = ['Pregunta','Respuesta Correcta', 'Respuesta Incorrecta']
     answer = []
@@ -160,6 +171,6 @@ def quizz():
             a = dict(zip(v2,i))
         answer.append(a)
     print(answer)
-    
-    
-    return render_template("quizz.html" , r = r, answer=answer)
+        
+
+    return render_template("repro.html", answer = answer)
