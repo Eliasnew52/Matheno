@@ -7,37 +7,22 @@
 {% block main %}
 
   <div>
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Quizz</th>
-                    <th>Descripcion </th>
-                    <th>Link de portada </th>
-                    <th> Verificacion </th>
-                    <th> Categoria </th>
-                    <th> Dificultad </th>
-                </tr>
-            </thead>
-            <tbody>
-                {%for i in r %}
-                    <tr>
-                        <td> {{i.Quizz}} </td>
-                        <td> {{i.Descripcion}} </td>
-                        <td> {{i.Portada}} </td>
-                        <td>{{i.Verificacion}}</td>
-                        <td> {{i.Categoria}} </td>
-                        <td> {{i.Dificultad}} </td>
-                    </tr>
+        {% for i in r%}
 
-                {% endfor %}
+            <h1> {{i['Quizz']}}</h1>
+            <div>
+                <p>{{i['Descripcion']}}</p>
+            </div>
+            <div>
+                <span> Categoria: {{i['Categoria']}}</span>
+                <br>
+                <span> Dificultad: {{i['Dificultad']}}</span>
+            </div>
 
-                <div>
-                    
-            </tbody>
-        </table>
+        {% endfor %}
 
         <button id="start">
-            <a href="/repro">
+            <a href="/repro" >
                 <p>
                     play quizz
                 </p>

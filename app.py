@@ -153,16 +153,21 @@ def quizz():
     db = sqlite3.connect("matheno.db", check_same_thread=False)
     c = db.cursor()
     
-    view = c.execute("SELECT QuizzCreado.Quizz, QuizzCreado.Descripcion, QuizzCreado.PortadaLink, QuizzCreado.Verificado, Categoria.Categoria, Dificultad.Dificultad FROM QuizzCreado JOIN Categoria ON Categoria.IdCategoria = QuizzCreado.IdCategoria JOIN Dificultad ON Dificultad.IdDificultad = QuizzCreado.IdDificultad WHERE QuizzCreado.IdQuizzCreado = 2").fetchall()
-    v = ["Quizz","Descripcion","Portada","Verificado","Categoria","Dificultad"]
-    
+    quizz = c.execute("SELECT QuizzCreado.Quizz, QuizzCreado.Descripcion, QuizzCreado.PortadaLink, QuizzCreado.Verificado, Categoria.Categoria, Dificultad.Dificultad FROM QuizzCreado JOIN Categoria ON Categoria.IdCategoria = QuizzCreado.IdCategoria JOIN Dificultad ON Dificultad.IdDificultad = QuizzCreado.IdDificultad WHERE QuizzCreado.IdQuizzCreado = 2").fetchall()    
     r = []
-    for i in view:
-        for j in v:
-            a = dict(zip(v,i))
-        r.append(a)
-        
-    play = c.execute("select IdQuizzCreado from QuizzCreado Where IdQuizzCreado = 1")
+    print(quizz[0])
+       
+    for i in quizz:
+        print(i)
+        dic = {
+            "Quizz": i[0],
+            "Descripcion": i[1],
+            "PortadaLink": i[2],
+            "Verificado": i[3],
+            "Categoria": i[4],
+            "Dificultad": i[5],
+        }
+        r.append(dic) 
     
     return render_template("quizz.html" , r = r)
 
