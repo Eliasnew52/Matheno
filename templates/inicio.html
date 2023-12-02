@@ -20,7 +20,7 @@
     <title>Inicio</title>
   </head>
 
-  <body>
+  <body class="initial-hide">
 
 
     <nav class="sidebar close">
@@ -160,6 +160,10 @@
     {% endif %}
 
     <!--{% block main %} {% endblock %}-->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}">
+      document.addEventListener("DOMContentLoaded", function () {
+    document.body.classList.remove("initial-hide");
+  });
+    </script>
   </body>
 </html>

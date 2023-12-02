@@ -298,10 +298,73 @@ body.dark .switch::before {
   width: calc(100% - 88px);
 }
 
+/*===css para imagen en perfil*/
+.drop-container {
+  position: relative;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+  padding: 20px;
+  border-radius: 10px;
+  border: 2px dashed #555;
+  color: #444;
+  cursor: pointer;
+  transition: background .2s ease-in-out, border .2s ease-in-out;
+}
+
+.drop-container:hover,
+.drop-container.drag-active {
+  border-color: rgb(160, 159, 159);
+}
+
+.drop-container:hover .drop-title,
+.drop-container.drag-active .drop-title {
+  color: var(--text-color);
+}
+
+.drop-title {
+  color: var(--text-color);
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  transition: color .2s ease-in-out;
+}
 
 
+input[type=file] {
+  width: 350px;
+  max-width: 100%;
+  color: #444;
+  padding: 5px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #555;
+}
 
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: #084cdf;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
 
+input[type=file]::file-selector-button:hover {
+  background: #0d45a5;
+}
+
+.initial-hide {
+  display: none;
+}
+/*----------------------------------------------------------------
+
+/*--footer--*/
 footer {
   background-color: #333;
   color: white;

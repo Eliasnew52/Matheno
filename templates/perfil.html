@@ -1,12 +1,16 @@
-{% extends "inicio.html" %} {% block title %} Index {% endblock %} {% block home
-%} Perfil - {{session.name}}
-    <!-- {% if userImg == none %}
-    <img src="static/img/default-img.jpeg" alt="img">
-    {% else %}
-    <img src="static/img/default-img.jpeg" alt="img">
-    {% endif %} -->
+{% extends "inicio.html" %}
+{% block title %} Index {% endblock %}
+{% block home %}
+Perfil - Usuario: @{{session.name}}
 
-
+<form method="post" enctype="multipart/form-data">
+    <label for="images" class="drop-container" id="dropcontainer">
+        <span class="drop-title">Subir imagen</span>
+        <input type="file" id="images" name="producto_imagen">
+        <input type="submit" value="Guardar">
+    </label>
+</form>
 {% endblock %}
+
 
 

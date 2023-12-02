@@ -1,18 +1,31 @@
 import os
 import sqlite3
 import cloudinary
-          
-from flask import Flask, redirect, render_template,request, session, flash, url_for
+import urllib.request  
+from werkzeug.utils import secure_filename         
+from flask import Flask, redirect, render_template,request, session, flash, url_for, request
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 from helpers import login_required
 
 app = Flask(__name__)
 
+UPLOAD_FOLDER = 'static/img'
+
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+
+# Formatos disponibles para imágenes
+app.config["MAX_CONTENT_LENGTH"] = 16 * 1024 * 1024
+FORMATOS_DISPONIBLES = (['png', 'jpg', 'jpeg', 'gif'])
+
 Session(app)
+
+
+
+def formato_archivo(filename):
+    return "." in filename and filename.rsplit('.', 1)[1].lower() in FORMATOS_DISPONIBLES
 
 @app.after_request
 def after_request(response):
@@ -139,9 +152,34 @@ def create_quizz():
     else:
         return render_template("create_quizz.html")
     
-@app.route("/perfil")
+
+@app.route("/perfil", methods=[ "GET", "POST"])
 def perfil():
+    if request.method == "POST":
+        if 'producto_imagen' not in request.files:
+            flash("Error al subir archivo")
+            return render_template("perfil.html")
+
+        img = request.files['producto_imagen']
+
+        if img and formato_archivo(img.filename):
+            filename = secure_filename(img.filename)
+            img.save(os.path.join(UPLOAD_FOLDER, filename))
+
+            db = sqlite3.connect("matheno.db", check_same_thread=False)
+            c = db.cursor()
+
+            # Obtener el ID del usuario actual
+            user_id = session["user_id"][0][0]
+
+            # Actualizar la ruta de la imagen en la base de datos
+            c.execute("UPDATE Usuarios SET Imagen = ? WHERE IdUsuarios = ?", [filename, user_id])
+
+            db.commit()
+            db.close()
+
     return render_template("perfil.html")
+
     
 @app.route("/Buscar")
 def Buscar():
