@@ -1,22 +1,33 @@
-{% extends "layout.html" %}
+{% extends "inicio.html" %} {% block title %} Index {% endblock %} {% block home
+%} {% if session["user_id"] %}
+<p>login done</p>
+{% else %}
 
-{% block title %}
-    Index
-{% endblock %}
-    
-{% block main %}
-        {% if session["user_id"] %}
-            <p>login done</p>
-        {% else %}
-        <form action="{{ url_for('login')}}" method="POST">
-            <div class="mb-3">
-                <input autocomplete="off" autofocus class="form-control mx-auto w-auto" id="Usuario" name="Usuario" placeholder="Usuario" type="text">
-            </div>
-            <div class="mb-3">
-                <input class="form-control mx-auto w-auto" id="password" name="password" placeholder="password" type="password">
-            </div>
-            <button class="btn btn-primary" type="submit">Log In</button>
-        </form>
-        {% endif %}
-    
-{% endblock %}
+<form action="{{ url_for('login')}}" method="POST">
+  <div class="home">
+    <br><br>
+    <h4>Si ya creaste un usuario,</h4>
+    <h4>ingresa tu nombre de usuario y contraseña :]</h4>
+    <br>
+      <label for="Usuario">Usuario:</label>
+    <input
+      autocomplete="off"
+      autofocus
+      class="form-control mx-auto w-auto"
+      id="Usuario"
+      name="Usuario"
+      placeholder="Usuario"
+      type="text"
+    />
+    <br>
+    <label for="Contraseña">Contraseña:</label>
+    <input
+      class="form-control mx-auto w-auto"
+      id="password"
+      name="password"
+      placeholder="Contraseña"
+      type="password"
+      />
+      <button class="btn btn-primary" type="submit">Log In</button>
+  </form>
+{% endif %} {% endblock %}

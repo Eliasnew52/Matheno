@@ -1,3 +1,0 @@
-pasar el codigo dirigido a quizz.html a index.html
-
-dejar en quizz.html el codigo para mostrar al usuario las preguntas con sus posibles respuestas

@@ -1,29 +1,25 @@
-{% extends "layout.html" %}
+{% extends "inicio.html" %} {% block title %} Index {% endblock %} {% block
+home%}
+<h2>Proyecto Final de CS50: Matheno</h2>
+<br />
 
-{% block title %}
-    Index
-{% endblock %}
-    
-{% block main %}
-    <div class="start-screen">
-        <h1>Welcome to Matheno</h1>
-        <p>Learn Psychometrics with our quizzes</p>
+<h3>¿Qué es Matheno?</h3>
+<p>
+  Matheno es una plataforma web que permite a los usuarios crear y participar en
+  quizzes personalizables. Ofrece opciones para editar el formato del test,
+  agregar multimedia y definir métodos de respuesta. Los usuarios pueden filtrar
+  y buscar tests en la página principal. Cada usuario tiene un perfil
+  obligatorio para seguir a otros, recibir notificaciones y ver estadísticas
+  comparativas después de completar un test.
+</p>
+<br />
+<ul class="text">
+  <h5 class="*">
+    ⭐ Hecho por:
+    <li>Allan Juárez Sanchez</li>
+    <li>Isaac Loaisga Velasquez</li>
+    <li>Karina Marenco Zamora</li>
+  </h5>
+</ul>
 
-        <div>
-            <button id="start">
-                <a href="/Buscar">
-                    <p>
-                        Buscar
-                    </p>
-                </a>
-            </button>
-        </div>
-    </div>
-
-    <div>
-
-        
-    </div>
-    
-           
 {% endblock %}

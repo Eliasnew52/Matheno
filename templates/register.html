@@ -1,24 +1,47 @@
-{% extends "layout.html" %}
-
-{% block title %}
-    Register
-{% endblock %}
-    
-{% block main %}
-<form method="post">
-    
-    <div class="form-r">
-        <input autocomplete="off" autofocus class="form-control" name="Usuario" placeholder="Usuario" type="text">
-    </div>
-    <div class="form-r">
-        <input autocomplete="off" autofocus class="form-control" name="Email" placeholder="Email" type="text">
-    </div>
-    <div class="form-r">
-        <input class="form-control" name="Password" placeholder="Contraseña" type="password">
-    </div>
-    <div class="form-r">
-        <input class="form-control" name="confirmation" placeholder="Verificar Contraseña" type="password">
-    </div>
-    <button class="btn btn-primary" type="submit">Registrarse</button>
+{% extends "inicio.html" %} {% block title %} Register {% endblock %} {% block
+home %}
+<form action="{{ url_for('register')}}" method="POST">
+  <div class="home">
+    <br /><br />
+    <h4>Si aún no tienes un usuario, crea uno:]</h4>
+    <br />
+    <label for="Usuario">Usuario:</label>
+    <input
+      autocomplete="off"
+      autofocus
+      class="form-control"
+      name="Usuario"
+      placeholder="Usuario"
+      type="text"
+    />
+    <br />
+    <label for="Email">Email:</label>
+    <input
+      autocomplete="off"
+      autofocus
+      class="form-control"
+      name="Email"
+      placeholder="Email"
+      type="text"
+    />
+    <br />
+    <label for="Contraseña">Contraseña:</label>
+    <input
+      class="form-control"
+      name="Password"
+      placeholder="Contraseña"
+      type="password"
+    />
+    <br />
+    <label for="Verificar Contraseña">Verificar Contraseña:</label>
+    <input
+      class="form-control"
+      name="confirmation"
+      placeholder="Verificar Contraseña"
+      type="password"
+    />
+    <br />
+    <button class="toggle" type="submit">Registrarse</button>
+  </div>
 </form>
 {% endblock %}

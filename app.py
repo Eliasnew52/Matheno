@@ -22,17 +22,21 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route("/", methods=["GET", "POST"])
+
+@app.route("/")
 def index():
     db = sqlite3.connect("matheno.db", check_same_thread=False)
     c = db.cursor()
     if request.method == "POST":
         if request.form.get("opc1") == "Buscar":
             Buscar = request.form.get("Buscar")
-            return render_template("index.html", Buscar="Buscar")
+            return render_template("index.html", Buscar=Buscar)
     else:
         return render_template("index.html")
 
+@app.route("/presentacion")
+def presentacion():
+    return render_template("presentacion.html")
 
 @app.route("/register", methods=[ "GET", "POST"])
 def register():
@@ -100,8 +104,10 @@ def login():
             flash("invalid password")
             return render_template("login.html")
         
-        remember = db.execute("SELECT IdUsuarios FROM Usuarios WHERE Usuario = ?", [request.form.get("Usuario")]).fetchall()
+        remember = db.execute("SELECT IdUsuarios,Usuario FROM Usuarios WHERE Usuario = ?", [request.form.get("Usuario")]).fetchall()
+        print(remember)
         session["user_id"] = [remember[0], ["IdUsuarios"]]
+        session["name"]=remember[0][1]
         db.commit()
         db.close()
         return redirect("/")
@@ -133,6 +139,10 @@ def create_quizz():
     else:
         return render_template("create_quizz.html")
     
+@app.route("/perfil")
+def perfil():
+    return render_template("perfil.html")
+    
 @app.route("/Buscar")
 def Buscar():
     return render_template("buscar.html")
@@ -161,16 +171,22 @@ def quizz():
 def repro():
     db = sqlite3.connect("matheno.db", check_same_thread=False)
     c = db.cursor()
-    
-    respuestas = c.execute("Select inciso.Subsection, Correctas.Respuesta, Incorrectas.Respuesta FROM QuizzCreado JOIN inciso ON QuizzCreado.IdQuizzCreado = inciso.IdQuizz JOIN Correctas ON Correctas.IdInciso = inciso.IdInciso JOIN Incorrectas ON inciso.IdInciso = Incorrectas.IdInciso WHERE QuizzCreado.IdQuizzCreado = 2 ORDER BY Incorrectas.Respuesta desc, Correctas.Respuesta asc").fetchall()
-    v2 = ['Pregunta','Respuesta Correcta', 'Respuesta Incorrecta']
-    answer = []
-    
-    for i in respuestas:
-        for j in v2:
-            a = dict(zip(v2,i))
-        answer.append(a)
-    print(answer)
-        
 
-    return render_template("repro.html", answer = answer)
+    id_preguntas = c.execute("Select inciso.IdInciso, inciso.Subsection from inciso WHERE inciso.IdQuizz = 2").fetchall()
+    print(id_preguntas)
+    preguntas_list = []
+    
+    for i in id_preguntas:
+        print("aaa",i[0])
+        
+        respuestas = c.execute("select Respuestas.Respuesta, Respuestas.Verificacion from Respuestas JOIN inciso ON inciso.IdInciso = Respuestas.IdInciso WHERE inciso.IdInciso = ?", str(i[0])).fetchall()
+        print(respuestas)
+        pregunta_dic = {
+            "id_preg": i[0],
+            "preg": i[1],
+            "respuestas": respuestas,
+        }
+        
+        preguntas_list.append(pregunta_dic)
+        
+    return render_template("repro.html", p=preguntas_list)
