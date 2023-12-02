@@ -22,17 +22,21 @@ def after_request(response):
     response.headers["Pragma"] = "no-cache"
     return response
 
-@app.route("/", methods=["GET", "POST"])
+
+@app.route("/")
 def index():
     db = sqlite3.connect("matheno.db", check_same_thread=False)
     c = db.cursor()
     if request.method == "POST":
         if request.form.get("opc1") == "Buscar":
             Buscar = request.form.get("Buscar")
-            return render_template("index.html", Buscar="Buscar")
+            return render_template("index.html", Buscar=Buscar)
     else:
         return render_template("index.html")
 
+@app.route("/presentacion")
+def presentacion():
+    return render_template("presentacion.html")
 
 @app.route("/register", methods=[ "GET", "POST"])
 def register():
@@ -100,8 +104,10 @@ def login():
             flash("invalid password")
             return render_template("login.html")
         
-        remember = db.execute("SELECT IdUsuarios FROM Usuarios WHERE Usuario = ?", [request.form.get("Usuario")]).fetchall()
+        remember = db.execute("SELECT IdUsuarios,Usuario FROM Usuarios WHERE Usuario = ?", [request.form.get("Usuario")]).fetchall()
+        print(remember)
         session["user_id"] = [remember[0], ["IdUsuarios"]]
+        session["name"]=remember[0][1]
         db.commit()
         db.close()
         return redirect("/")
@@ -132,6 +138,10 @@ def create_quizz():
         return render_template("create_quizz.html", Nombre = Nombre, Dificultad=Dificultad)
     else:
         return render_template("create_quizz.html")
+    
+@app.route("/perfil")
+def perfil():
+    return render_template("perfil.html")
     
 @app.route("/Buscar")
 def Buscar():
