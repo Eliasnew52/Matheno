@@ -1,0 +1,133 @@
+{% extends "inicio.html" %}
+
+{% block title %}
+    Create Quizz
+{% endblock %}
+    
+{% block home %}
+     <div>
+        <img src="/static/matheno-logo-removebg-removebg-preview.png" alt="matheno">
+    </div>
+
+    <form id="formularioPreguntas" action="{{ url_for('construct')}}" method="POST">
+        <div id="preguntasContainer">
+            <div class="pregunta">
+                <div class="preguntaIndividual">
+                    <label for="Pregunta1">Escriba su Pregunta:</label>
+                    <textarea id="Pregunta1" rows="4" cols="50"></textarea>
+                </div>
+    
+                <label for="tipoPregunta1">Tipo de pregunta:</label>
+                <select class="tipoPregunta" onchange="mostrarOpciones(this)">
+                    <option value=""></option>
+                    <option value="seleccionMultiple">Selección múltiple</option>
+                    <option value="escribirRespuesta">Escribir respuesta</option>
+                </select>
+    
+                <div class="opcionesSeleccionMultiple" style="display: none;">
+                    <input type="text" placeholder="Opcion 1">
+                    <input type="text" placeholder="Opcion 2">
+                    <input type="text" placeholder="Opcion 3">
+                    <input type="text" placeholder="Opcion 4">
+                </div>
+    
+                <div class="opcionEscribirRespuesta" style="display: none;">
+                    <label for="respuesta1">Escriba su respuesta:</label>
+                    <textarea id="respuesta1" rows="4" cols="50"></textarea>
+                </div>
+            </div>
+        </div>
+    
+        <button type="button" onclick="agregarPregunta()">Agregar otra pregunta</button>
+        <button type="submit">Finalizar</button>
+    </form>
+    
+    <script>
+        let contadorPreguntas = 1;
+    
+        function mostrarOpciones(selectElement) {
+            const preguntaActual = selectElement.parentElement;
+            const opcionesSeleccionMultiple = preguntaActual.querySelector('.opcionesSeleccionMultiple');
+            const opcionEscribirRespuesta = preguntaActual.querySelector('.opcionEscribirRespuesta');
+    
+            if (selectElement.value === 'seleccionMultiple') {
+                opcionesSeleccionMultiple.style.display = 'block';
+                opcionEscribirRespuesta.style.display = 'none';
+            } else if (selectElement.value === 'escribirRespuesta') {
+                opcionesSeleccionMultiple.style.display = 'none';
+                opcionEscribirRespuesta.style.display = 'block';
+            }
+        }
+    
+        function agregarPregunta() {
+            contadorPreguntas++;
+    
+            const pregunta = document.createElement('div');
+            pregunta.classList.add('pregunta');
+    
+            pregunta.innerHTML = `
+                <div class="preguntaIndividual">
+                    <label for="Pregunta${contadorPreguntas}">Escriba su Pregunta:</label>
+                    <textarea id="Pregunta${contadorPreguntas}" rows="4" cols="50"></textarea>
+                </div>
+    
+                <label for="tipoPregunta${contadorPreguntas}">Tipo de pregunta:</label>
+                <select class="tipoPregunta" onchange="mostrarOpciones(this)">
+                    <option value=""></option>
+                    <option value="seleccionMultiple">Selección múltiple</option>
+                    <option value="escribirRespuesta">Escribir respuesta</option>
+                </select>
+    
+                <div class="opcionesSeleccionMultiple" style="display: none;">
+                    <input type="text" placeholder="Opcion 1">
+                    <input type="text" placeholder="Opcion 2">
+                    <input type="text" placeholder="Opcion 3">
+                    <input type="text" placeholder="Opcion 4">
+                </div>
+    
+                <div class="opcionEscribirRespuesta" style="display: none;">
+                    <label for="respuesta${contadorPreguntas}">Escriba su respuesta:</label>
+                    <textarea id="respuesta${contadorPreguntas}" rows="4" cols="50"></textarea>
+                </div>
+            `;
+    
+            document.getElementById('preguntasContainer').appendChild(pregunta);
+        }
+    
+        document.getElementById('formularioPreguntas').addEventListener('submit', function(event) {
+           // event.preventDefault();
+            console.log('Datos del formulario enviado');
+            // Aquí puedes procesar/enviar los datos del formulario
+        });
+    </script>
+    
+
+<!--
+    <div id="remove_items">
+        <form action="/remove_items" method="POST">
+            {% for i in range(10)%}
+            <label for="Pregunta" name="Pregunta">Ingrese una pregunta</label><br>
+            <input type="text" name="check" id="Pregunta" value="Pregunta" onchange="check_me('{{ item }}')">
+
+                {% for j in range(4)%}
+                    <input type="text" name="check" id="Pregunta" value="Pregunta" onchange="check_me('{{ item }}')">
+
+                {% endfor %}
+            {% endfor %}
+            <input type="submit" value="CHECK ITEMS" id="remove_btn">
+        </form>
+    </div>
+
+     ADD ITEMS FORM 
+    <div id="add_item">
+        <form action="/add_items" method="POST">
+            <select name="select_items">
+            {% for item in all_items %}
+            <option value="{{ item }}">{{ item }}</option>
+            {% endfor %}                
+            <input type="submit" value="ADD ITEM" id="add_btn">     
+        </form>
+    </div>
+
+-->
+{% endblock %}

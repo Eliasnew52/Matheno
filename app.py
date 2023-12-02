@@ -131,11 +131,24 @@ def create_quizz():
         Nombre = request.form.get("Nombre")
         Descripcion = request.form.get("Descripcion")
         Categoria  = request.form.get("Categoria")
+        Dificultad = request.form.get("Dificultad")
+        Autor = session["user_id"][0][0]
         if not Nombre:
             flash("Se tiene que ingresar un nombre para el nuevo quizz.")
             return render_template("create_quizz.html")
+        elif not Categoria:
+            flash("Se tiene que ingresar una categoria para el nuevo quizz.")
+            return render_template("create_quizz.html")
+        elif not Dificultad:
+            flash("Se tiene que ingresar una dificultad para el nuevo quizz.")
+            return render_template("create_quizz.html")
         
-        return render_template("create_quizz.html", Nombre = Nombre, Dificultad=Dificultad)
+        search = c.execute("SELECT * FROM QuizzCreado WHERE Quizz = ?", [Nombre]).fetchall()
+        if len(search) != 0:
+            flash("El quizz ya existe.")
+            return render_template("create_quizz.html")
+        c.execute("INSERT INTO QuizzCreado (Quizz, Descripcion, IdCategoria, IdDificultad, IdAutor) VALUES (?, ?, ?, ?, ?)", [Nombre, Descripcion, Categoria, Dificultad, Autor])
+        return render_template("construct.html")
     else:
         return render_template("create_quizz.html")
     
@@ -172,26 +185,88 @@ def quizz():
     return render_template("quizz.html" , r = r)
 
 
-@app.route("/repro")
+@app.route("/repro", methods=["GET", "POST"])
 def repro():
     db = sqlite3.connect("matheno.db", check_same_thread=False)
     c = db.cursor()
-
+    count = 0
     id_preguntas = c.execute("Select inciso.IdInciso, inciso.Subsection from inciso WHERE inciso.IdQuizz = 2").fetchall()
-    print(id_preguntas)
+   # print(id_preguntas)
     preguntas_list = []
     
     for i in id_preguntas:
         print("aaa",i[0])
         
         respuestas = c.execute("select Respuestas.Respuesta, Respuestas.Verificacion from Respuestas JOIN inciso ON inciso.IdInciso = Respuestas.IdInciso WHERE inciso.IdInciso = ?", str(i[0])).fetchall()
-        print(respuestas)
+       # print(respuestas)
         pregunta_dic = {
             "id_preg": i[0],
             "preg": i[1],
             "respuestas": respuestas,
         }
-        
         preguntas_list.append(pregunta_dic)
+
+        search = c.execute("SELECT * FROM QuizzJugado WHERE IdQuizz = 2 AND IdUsuarios = 2").fetchall()
+        if len(search) == 0:     
+            c.execute("INSERT INTO QuizzJugado (IdQuizz, IdUsuarios) VALUES (2, 2)") 
+            c.execute("INSERT INTO Puntaje (Puntaje, IdQuizzJugado) VALUES (0,1)")
         
-    return render_template("repro.html", p=preguntas_list)
+    if request.method == "POST":
+        
+        data = request.get_json()
+        pregunta_id = data.get('preguntaId')
+        respuesta = data.get('respuesta')
+        #print(pregunta_id, respuesta)
+        
+        verificar_respuesta = c.execute("SELECT Respuestas.Verificacion  FROM Respuestas JOIN inciso ON inciso.IdInciso = Respuestas.IdInciso WHERE inciso.IdInciso = ? AND Respuestas.Respuesta = ?", [pregunta_id, respuesta]).fetchall()
+        #print(verificar_respuesta)
+        for i in verificar_respuesta:
+            print(i[0])
+            if i[0] == "correcta":
+            
+                c.execute("UPDATE Puntaje SET Puntaje = Puntaje + 1 WHERE IdQuizzJugado  = 1")
+        print(count)
+        
+        db.commit()
+        db.close()
+        return render_template("repro.html", p=pregunta_id, r=respuesta)
+
+    else:
+        return render_template("repro.html", p=preguntas_list)
+    
+
+
+
+    
+@app.route("/construct", methods=["GET", "POST"] )
+def construct():
+    
+    if request.method == "POST":
+        preguntas_respuestas = []
+
+        # Obtener las claves del formulario que comienzan con 'Pregunta'
+        claves_preguntas = [clave for clave in request.form if clave.startswith('Pregunta')]
+
+        # Recorrer las claves y obtener el valor correspondiente (las preguntas y sus respuestas)
+        for clave in claves_preguntas:
+            pregunta = request.form[clave]
+
+            # Obtener el nombre de la clave de respuesta asociada a esta pregunta
+            clave_respuesta = 'Respuesta' + clave[8:]  # Asumiendo que las respuestas tienen el formato 'Respuesta1', 'Respuesta2', etc.
+
+            if clave_respuesta in request.form:
+                respuesta = request.form[clave_respuesta]
+            else:
+                respuesta = None  # Puedes manejar esto según tu lógica
+
+            # Crear un diccionario con la pregunta y su respuesta (si está presente)
+            pregunta_respuesta = {'pregunta': pregunta, 'respuesta': respuesta}
+            preguntas_respuestas.append(pregunta_respuesta)
+
+        # Imprimir o hacer algo con la lista de diccionarios de preguntas y respuestas
+        print('Lista de preguntas y respuestas:', preguntas_respuestas)
+    
+        return render_template("inicio.html")
+    else:
+        return render_template("construct.html")
+

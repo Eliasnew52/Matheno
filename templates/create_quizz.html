@@ -1,5 +1,5 @@
 {% extends "inicio.html" %} {% block title %} Index {% endblock %} {% block home
-%} {% if Nombre and Dificultad%}
+%} 
 <!-- 
     <form action="{{ url_for('create_quizz')}}" method="post" enctype="multipart/form-data">
         <dl>
@@ -19,7 +19,6 @@
   </select>
 </form>
 
-{% else %}
 
 <form action="{{ url_for('create_quizz')}}" method="post">
   <div class="form-r">
@@ -27,33 +26,33 @@
     <h3>Ingresa el nombre del Quizz</h3>
     <br />
     <label for="Nombre">Nombre:</label>
-    <input
-      autocomplete="off"
-      autofocus
-      class="search-box"
-      name="Nombre"
-      placeholder="Nombre"
-      type="text"
-    />
+    <input autocomplete="off" autofocus class="search-box" name="Nombre" placeholder="Nombre" type="text" />
     <label for="Descripcion">Descripcion:</label>
-    <input
-      type="text"
-      autocomplete="off"
-      class="search-box"
-      name="Descripcion"
-      placeholder="Descripcion"
-    />
+    <input type="text" autocomplete="off" class="search-box" name="Descripcion" placeholder="Descripcion" />
+
     <label for="Categoria">Categoría:</label>
-    <input
-      type="text"
-      autocomplete="off"
-      class="search-box"
-      name="Categoria"
-      placeholder="Categoria"
-    />
+
+    <select name="Categoria" id="Categoria">
+      <option value="Psicometria">Psicometria</option>
+      <option value="Logica">Logica</option>
+      <option value="Matematica">Matematica</option>
+      <option value="Cultura General">Cultura General</option>
+      <option value="Programacion">Programacion</option>
+    </select>
+
+    <label for="Dificultad">Dificultad:</label>
+
+    <select name="Dificultad" id="Dificultad">
+      <option value="Principiante">Principiante</option>
+      <option value="Iniciado">Iniciado</option>
+      <option value="Intermedio">Intermedio</option>
+      <option value="Avanzado">Avanzado</option>
+      <option value="Experto">Experto</option>
+    </select>
     <br /><br />
     <button class="btn btn-primary" type="submit">Confirmar</button>
   </div>
 </form>
 
-{% endif %} {% endblock %}
+
+{% endblock %}

@@ -15,22 +15,70 @@
 </style>
 
 <ul class="menu" id="horizontal">
-  <li>Pregunta</li>
-  <br>
-  <ol>
-    {% for i in p %}
-    <li>
-        <div value="{{ i.id_preg }}">{{ i.preg }}</div>
-        <div>
-            {% for j in i.respuestas %}
-                <span value="{{ j[1] }}">{{ j[0] }}</span>
-            {% endfor %}            
-        </div>
-    </li>
-    {% endfor %}
-    
-  </ol>
- 
-</ul>
+    <li>Pregunta</li>
+    <br>
+    <ol>
+      {% for i in p %}
+      <ul>
+          <div id="pregunta_{{i.id_pregunta}}">
+            <div value="{{ i.id_preg }}">{{ i.preg }}</div>
+            <div>
+                {% for j in i.respuestas %}
+                    <div class="send">
+                        <input type="button" name="{{ j[1] }}" value="{{ j[0] }}" class="send" onclick="ocultarElementos(this)">
+                    </div>
+                {% endfor %}            
+            </div>
+          </div>
+        </ul>
+      {% endfor %}
+      
+    </ol>
+   
+  </ul>
+  <div id="respuesta-seleccionada"></div>
 
-{% endblock %}
+<script>
+
+    function ocultarElementos(elementoClickeado) {
+        // Obtener el contenedor de la pregunta y sus respuestas
+        const preguntaContainer = elementoClickeado.closest('div[id^="pregunta_"]');
+    
+        // Ocultar el contenedor completo (tanto la pregunta como las respuestas)
+        preguntaContainer.style.display = 'none';
+    }
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const botonesRespuesta = document.querySelectorAll('.send input[type="button"]');
+
+    botonesRespuesta.forEach(boton => {
+        boton.addEventListener('click', function() {
+            const preguntaId = this.closest('li').querySelector('div[value]').getAttribute('value');
+            const respuestaSeleccionada = this.value;
+
+            // Aquí puedes mostrar la respuesta seleccionada al usuario si lo deseas
+            document.getElementById('respuesta-seleccionada').innerText = `Seleccionaste: ${respuestaSeleccionada}`;
+
+            // Enviar la respuesta seleccionada al servidor Flask
+            fetch('/repro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    preguntaId: preguntaId,
+                    respuesta: respuestaSeleccionada
+                })
+            })
+            .then(response => {
+                // Manejar la respuesta del servidor si es necesario
+            })
+            .catch(error => {
+                console.error('Error al enviar la respuesta', error);
+            });
+        });
+    });
+});
+</script>
+  {% endblock %}
